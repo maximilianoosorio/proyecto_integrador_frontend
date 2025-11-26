@@ -50,11 +50,11 @@ export default function Cuidados() {
 
       {/* Botones Principales */}
       <button onClick={toggleCuidados} className="w-full max-w-2xl bg-gray-100 py-3 rounded-lg hover:bg-gray-200 transition mb-3 font-semibold border border-gray-300 shadow-sm flex justify-between px-4 items-center">
-        <span>Mostrar cuidados</span><span>▼</span>
+        <span>Mostrar cuidados</span>
       </button>
 
       <button onClick={toggleBienestar} className="w-full max-w-2xl bg-[#8bcbf9] py-3 rounded-lg hover:bg-[#5db3f0] transition font-semibold border border-blue-300 shadow-sm flex justify-between px-4 items-center text-[#4a3426]">
-        <span>Bienestar animal</span><span>→</span>
+        <span>Bienestar animal</span>
       </button>
 
       {/* --- SECCIÓN DE CUIDADOS --- */}
@@ -77,15 +77,15 @@ export default function Cuidados() {
       {/* --- SECCIÓN DE BIENESTAR ANIMAL --- */}
       {showBienestar && (
         <div className="mt-5 bg-white p-6 border border-blue-200 rounded-xl shadow-md w-full max-w-2xl text-left animate-in zoom-in-95 duration-200">
-          <h3 className="text-xl font-bold text-blue-600 mb-4 border-b pb-2">Bienestar animal 🏥</h3>
+          <h3 className="text-xl font-bold text-blue-600 mb-4 border-b pb-2">Bienestar animal </h3>
 
           <div className="space-y-4 text-gray-700 mb-6">
-            <p><strong>📞 Teléfono:</strong> +57 320 594 5135</p>
-            <p><strong>📧 Correo:</strong> gabrielamorenorodriguez44@gmail.com</p>
-            <p><strong>🕒 Horario:</strong> Lunes a sábado — 8:00 am a 6:00 pm</p>
+            <p><strong>Teléfono:</strong> +57 320 594 5135</p>
+            <p><strong>Correo:</strong> gabrielamorenorodriguez44@gmail.com</p>
+            <p><strong>Horario:</strong> Lunes a sábado — 8:00 am a 6:00 pm</p>
             
-            <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-100 text-sm">
-                <strong>💡 Consejos rápidos:</strong>
+            <div className="p-3 rounded-lg  text-sm">
+                <strong>Consejos rápidos:</strong>
                 <ul className="list-disc list-inside mt-1 space-y-1">
                     <li>En caso de emergencia, mantén al animal tranquilo.</li>
                     <li>No des medicamentos humanos.</li>
@@ -94,7 +94,7 @@ export default function Cuidados() {
             </div>
           </div>
 
-          <button onClick={() => setShowBienestar(false)} className="w-full bg-gray-200 py-2 rounded hover:bg-gray-300 font-bold text-gray-600">
+          <button onClick={() => setShowBienestar(false)} className="w-full bg-blue-300 py-2 rounded hover:bg-gray-300 font-bold text-gray-600">
             Cerrar
           </button>
         </div>

@@ -7,7 +7,7 @@ export default function Page() {
   
   // Función de WhatsApp
   const abrirWhatsapp = () => {
-    const numero = "573205945135"; 
+    const numero = "573003720466"; 
     const mensaje = "Hola, necesito información sobre bienestar animal.";
     const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, "_blank", "noopener,noreferrer");
@@ -26,7 +26,7 @@ export default function Page() {
         <Cuidados />
       </div>
 
-      {/* 🟢 BURBUJA FLOTANTE DE WHATSAPP (FUERA DE LA TARJETA) */}
+      {/* BURBUJA FLOTANTE DE WHATSAPP (FUERA DE LA TARJETA) */}
       <button
         onClick={abrirWhatsapp}
         // bottom-5: Un poquito separado del borde inferior
