@@ -1,111 +1,201 @@
 "use client";
 import { useState } from "react";
-// Nota: Ya NO importamos FaWhatsapp aquí porque lo moveremos al page.tsx
+// Importamos iconos para hacerlo más visual
+import {
+  FaBrain,
+  FaChevronDown,
+  FaClock,
+  FaEnvelope,
+  FaHandHoldingHeart,
+  FaPaw,
+  FaPhone,
+  FaShower,
+  FaStar,
+  FaTimes,
+  FaUserMd,
+  FaUtensils
+} from "react-icons/fa";
 
 export default function Cuidados() {
-  const [showCuidados, setShowCuidados] = useState<boolean>(false);
-  const [showBienestar, setShowBienestar] = useState<boolean>(false);
-  const [info, setInfo] = useState<string>("");
+  const [activeTab, setActiveTab] = useState<"cuidados" | "bienestar" | null>(null);
+  const [info, setInfo] = useState<{ title: string; text: string } | null>(null);
 
-  const toggleCuidados = () => {
-    setShowCuidados(!showCuidados);
-    setShowBienestar(false);
-    setInfo("");
+  const toggleSection = (section: "cuidados" | "bienestar") => {
+    if (activeTab === section) {
+      setActiveTab(null); // Si ya está abierto, lo cierra
+    } else {
+      setActiveTab(section); // Abre la nueva sección
+    }
+    setInfo(null); // Limpia la info anterior al cambiar
   };
 
-  const toggleBienestar = () => {
-    setShowBienestar(!showBienestar);
-    setShowCuidados(false);
-    setInfo("");
-  };
-
-  const showInfo = (type: string) => {
+  const showInfo = (type: string, title: string) => {
     let text = "";
     switch (type) {
       case "alimentacion":
-        text = `Alimentación adecuada:\n• Dar comida según la especie, edad y tamaño.\n• Evitar alimentos como chocolate, uvas y cebolla.\n• Mantener agua limpia siempre disponible.`;
+        text = `• Dar comida según la especie, edad y tamaño.\n• Evitar alimentos como chocolate, uvas y cebolla.\n• Mantener agua limpia siempre disponible.`;
         break;
       case "higiene":
-        text = `Higiene:\n• Bañar con productos especiales.\n• Limpiar ojos, orejas y patas.\n• Cepillar para evitar parásitos.`;
+        text = `• Bañar con productos especiales para mascotas.\n• Limpiar ojos, orejas y patas regularmente.\n• Cepillar el pelaje para evitar nudos y parásitos.`;
         break;
       case "salud":
-        text = `Salud:\n• Revisiones veterinarias.\n• Vacunas y desparasitación al día.\n• Vigilar heridas o debilidad.`;
+        text = `• Revisiones veterinarias periódicas.\n• Vacunas y desparasitación siempre al día.\n• Vigilar cambios de ánimo o heridas.`;
         break;
       case "emocionales":
-        text = `Cuidados emocionales:\n• Hablar con voz suave.\n• Dar tiempo para adaptarse.\n• Evitar regaños si está estresado.`;
+        text = `• Hablar con voz suave y calmada.\n• Dar tiempo para adaptarse a nuevos entornos.\n• Evitar regaños fuertes si está estresado.`;
         break;
       case "especiales":
-        text = `Cuidados después del rescate:\n• Dar comida en porciones pequeñas.\n• Revisar pulgas o garrapatas.\n• Mantenerlo caliente.\n• Evitar baños si está débil.`;
+        text = `• Dar comida en porciones pequeñas.\n• Revisar minuciosamente pulgas o garrapatas.\n• Mantenerlo caliente y seco.\n• Evitar baños inmediatos si está muy débil.`;
         break;
     }
-    setInfo(text);
+    setInfo({ title, text });
   };
 
+  // Datos para los botones de categorías (para mantener el código limpio)
+  const categories = [
+    { id: "alimentacion", label: "Alimentación", icon: <FaUtensils />, color: "bg-orange-100 text-orange-700 border-orange-200" },
+    { id: "higiene", label: "Higiene", icon: <FaShower />, color: "bg-blue-100 text-blue-700 border-blue-200" },
+    { id: "salud", label: "Salud", icon: <FaUserMd />, color: "bg-red-100 text-red-700 border-red-200" },
+    { id: "emocionales", label: "Emocional", icon: <FaBrain />, color: "bg-purple-100 text-purple-700 border-purple-200" },
+    { id: "especiales", label: "Rescate", icon: <FaStar />, color: "bg-yellow-100 text-yellow-700 border-yellow-200" },
+  ];
+
   return (
-    <div className="p-6 w-full flex flex-col items-center relative">
+    <div className="w-full flex flex-col items-center relative">
 
-      <h2 className="text-2xl font-bold bg-blue-300 mb-6 text-center px-4 py-3 rounded-xl w-full max-w-2xl shadow-sm text-[#4a3426]">
-        Información de bienestar y cuidados
-      </h2>
+      {/* --- TÍTULO --- */}
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-extrabold text-[#4a3426] flex items-center justify-center gap-2">
+           Guía de Cuidados <FaPaw className="text-orange-500" />
+        </h2>
+        <p className="text-gray-500 mt-2">Todo lo que necesitas para una mascota feliz.</p>
+      </div>
 
-      {/* Botones Principales */}
-      <button onClick={toggleCuidados} className="w-full max-w-2xl bg-gray-100 py-3 rounded-lg hover:bg-gray-200 transition mb-3 font-semibold border border-gray-300 shadow-sm flex justify-between px-4 items-center">
-        <span>Mostrar cuidados</span>
-      </button>
+      {/* --- BOTONES PRINCIPALES (TIPO PESTAÑA) --- */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-3xl mb-6">
+        
+        {/* Botón Cuidados */}
+        <button 
+          onClick={() => toggleSection("cuidados")} 
+          className={`p-4 rounded-2xl border-2 transition-all duration-300 flex items-center justify-between shadow-sm group ${
+            activeTab === "cuidados" 
+            ? "bg-[#4a3426] border-[#4a3426] text-white scale-105" 
+            : "bg-white border-gray-200 text-gray-600 hover:border-[#4a3426] hover:text-[#4a3426]"
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <div className={`p-2 rounded-full ${activeTab === "cuidados" ? "bg-white/20" : "bg-gray-100 group-hover:bg-orange-100"}`}>
+               <FaPaw />
+            </div>
+            <span className="font-bold text-lg">Guía de Cuidados</span>
+          </div>
+          <FaChevronDown className={`transition-transform duration-300 ${activeTab === "cuidados" ? "rotate-180" : ""}`} />
+        </button>
 
-      <button onClick={toggleBienestar} className="w-full max-w-2xl bg-[#8bcbf9] py-3 rounded-lg hover:bg-[#5db3f0] transition font-semibold border border-blue-300 shadow-sm flex justify-between px-4 items-center text-[#4a3426]">
-        <span>Bienestar animal</span>
-      </button>
+        {/* Botón Bienestar */}
+        <button 
+          onClick={() => toggleSection("bienestar")} 
+          className={`p-4 rounded-2xl border-2 transition-all duration-300 flex items-center justify-between shadow-sm group ${
+            activeTab === "bienestar" 
+            ? "bg-[#C9E9FF] border-[#C9E9FF] text-[#4a3426] scale-105" 
+            : "bg-white border-gray-200 text-gray-600 hover:border-[#C9E9FF] hover:text-[#4a3426]"
+          }`}
+        >
+           <div className="flex items-center gap-3">
+            <div className={`p-2 rounded-full ${activeTab === "bienestar" ? "bg-white/40" : "bg-gray-100 group-hover:bg-blue-100"}`}>
+               <FaHandHoldingHeart />
+            </div>
+            <span className="font-bold text-lg">Centro de Bienestar</span>
+          </div>
+          <FaChevronDown className={`transition-transform duration-300 ${activeTab === "bienestar" ? "rotate-180" : ""}`} />
+        </button>
+      </div>
 
-      {/* --- SECCIÓN DE CUIDADOS --- */}
-      {showCuidados && (
-        <div className="mt-4 flex flex-col gap-3 w-full max-w-2xl animate-in slide-in-from-top-2 fade-in duration-300">
-          {[
-            { id: "alimentacion", label: "Alimentación adecuada" },
-            { id: "higiene", label: "Higiene" },
-            { id: "salud", label: "Salud" },
-            { id: "emocionales", label: "Cuidados emocionales" },
-            { id: "especiales", label: "Cuidados especiales" },
-          ].map((btn) => (
-            <button key={btn.id} className="bg-blue-100 py-2 px-4 rounded hover:bg-blue-200 text-left border border-blue-200 text-blue-900 font-medium" onClick={() => showInfo(btn.id)}>
-              • {btn.label}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* --- SECCIÓN DE BIENESTAR ANIMAL --- */}
-      {showBienestar && (
-        <div className="mt-5 bg-white p-6 border border-blue-200 rounded-xl shadow-md w-full max-w-2xl text-left animate-in zoom-in-95 duration-200">
-          <h3 className="text-xl font-bold text-blue-600 mb-4 border-b pb-2">Bienestar animal </h3>
-
-          <div className="space-y-4 text-gray-700 mb-6">
-            <p><strong>Teléfono:</strong> +57 320 594 5135</p>
-            <p><strong>Correo:</strong> gabrielamorenorodriguez44@gmail.com</p>
-            <p><strong>Horario:</strong> Lunes a sábado — 8:00 am a 6:00 pm</p>
-            
-            <div className="p-3 rounded-lg  text-sm">
-                <strong>Consejos rápidos:</strong>
-                <ul className="list-disc list-inside mt-1 space-y-1">
-                    <li>En caso de emergencia, mantén al animal tranquilo.</li>
-                    <li>No des medicamentos humanos.</li>
-                    <li>Busca ayuda profesional si tiene heridas.</li>
-                </ul>
+      {/* --- CONTENIDO DESPLEGABLE --- */}
+      
+      {/* 1. SECCIÓN DE CUIDADOS (GRID DE BOTONES) */}
+      {activeTab === "cuidados" && (
+        <div className="w-full max-w-3xl animate-in slide-in-from-top-4 fade-in duration-300">
+          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+            <p className="text-center text-gray-500 mb-4 font-medium">Selecciona una categoría para ver tips:</p>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {categories.map((cat) => (
+                <button 
+                  key={cat.id} 
+                  onClick={() => showInfo(cat.id, cat.label)}
+                  className={`${cat.color} flex flex-col items-center justify-center gap-2 p-4 rounded-xl border hover:scale-105 active:scale-95 transition-all shadow-sm`}
+                >
+                  <span className="text-2xl">{cat.icon}</span>
+                  <span className="font-bold text-sm">{cat.label}</span>
+                </button>
+              ))}
             </div>
           </div>
-
-          <button onClick={() => setShowBienestar(false)} className="w-full bg-blue-300 py-2 rounded hover:bg-gray-300 font-bold text-gray-600">
-            Cerrar
-          </button>
         </div>
       )}
 
-      {/* --- MODAL INFO --- */}
-      {info && (
-        <div className="mt-5 relative w-full max-w-2xl animate-in fade-in slide-in-from-bottom-4 duration-300">
-          <div className="bg-white p-6 border-2 border-blue-100 rounded-xl shadow-lg relative">
-            <button onClick={() => setInfo("")} className="absolute top-2 right-3 text-gray-400 hover:text-red-500 font-bold text-xl">✕</button>
-            <pre className="whitespace-pre-line font-sans text-gray-700 text-lg">{info}</pre>
+      {/* 2. SECCIÓN DE BIENESTAR ANIMAL */}
+      {activeTab === "bienestar" && (
+        <div className="w-full max-w-3xl animate-in zoom-in-95 duration-300">
+          <div className="bg-white p-8 rounded-3xl shadow-lg border border-blue-100 relative overflow-hidden">
+            {/* Adorno de fondo */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full "></div>
+            
+            <h3 className="text-2xl font-bold text-[#4a3426] mb-6 flex items-center gap-2 relative z-10">
+              Bienestar Animal <FaHandHoldingHeart className="text-blue-500"/>
+            </h3>
+
+            <div className="space-y-4 relative z-10">
+              <div className="flex items-center gap-3 text-gray-700 bg-gray-50 p-3 rounded-xl">
+                 <div className="bg-green-100 text-green-600 p-2 rounded-full"><FaPhone /></div>
+                 <div>
+                    <p className="text-xs text-gray-500 font-bold uppercase">Emergencias</p>
+                    <p className="font-bold text-lg">+57 320 594 5135</p>
+                 </div>
+              </div>
+
+              <div className="flex items-center gap-3 text-gray-700 bg-gray-50 p-3 rounded-xl">
+                 <div className="bg-blue-100 text-blue-600 p-2 rounded-full"><FaEnvelope /></div>
+                 <div className="overflow-hidden">
+                    <p className="text-xs text-gray-500 font-bold uppercase">Correo Electrónico</p>
+                    <p className="text-sm font-medium truncate">gabrielamorenorodriguez44@gmail.com</p>
+                 </div>
+              </div>
+
+              <div className="flex items-center gap-3 text-gray-700 bg-gray-50 p-3 rounded-xl">
+                 <div className="bg-purple-100 text-purple-600 p-2 rounded-full"><FaClock /></div>
+                 <div>
+                    <p className="text-xs text-gray-500 font-bold uppercase">Horario de Atención</p>
+                    <p className="font-medium">Lun - Sab: 8:00 am - 6:00 pm</p>
+                 </div>
+              </div>
+            </div>
+
+            <div className="mt-6 bg-yellow-50 p-4 rounded-xl border border-yellow-200 text-yellow-800 text-sm">
+                <strong>💡 Recuerda:</strong> Nunca automediques a tu mascota. Si notas algo extraño, contáctanos de inmediato.
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* --- TARJETA DE INFORMACIÓN (Aparece abajo cuando se selecciona un cuidado) --- */}
+      {info && activeTab === "cuidados" && (
+        <div className="w-full max-w-3xl mt-6 animate-in slide-in-from-bottom-6 fade-in duration-500">
+          <div className="bg-[#4a3426] text-white p-6 rounded-3xl shadow-xl relative">
+            <button 
+              onClick={() => setInfo(null)} 
+              className="absolute top-4 right-4 bg-white/20 hover:bg-white/40 rounded-full p-2 transition"
+            >
+              <FaTimes />
+            </button>
+            
+            <h4 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <span className="text-orange-300">★</span> Tips de {info.title}
+            </h4>
+            <div className="w-full h-px bg-white/20 mb-4"></div>
+            <p className="whitespace-pre-line text-lg leading-relaxed text-white/90">
+              {info.text}
+            </p>
           </div>
         </div>
       )}
