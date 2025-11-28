@@ -66,7 +66,7 @@ export default function Cuidados() {
       {/* --- TÍTULO --- */}
       <div className="text-center mb-8">
         <h2 className="text-3xl font-extrabold text-[#4a3426] flex items-center justify-center gap-2">
-           Guía de Cuidados <FaPaw className="text-orange-500" />
+           Guía de Cuidados <FaPaw className="text-blue-400" />
         </h2>
         <p className="text-gray-500 mt-2">Todo lo que necesitas para una mascota feliz.</p>
       </div>
@@ -80,7 +80,7 @@ export default function Cuidados() {
           className={`p-4 rounded-2xl border-2 transition-all duration-300 flex items-center justify-between shadow-sm group ${
             activeTab === "cuidados" 
             ? "bg-[#4a3426] border-[#4a3426] text-white scale-105" 
-            : "bg-white border-gray-200 text-gray-600 hover:border-[#4a3426] hover:text-[#4a3426]"
+            : "bg-blue-200 border-gray-200 text-gray-600 hover:border-[#4a3426] hover:text-[#4a3426]"
           }`}
         >
           <div className="flex items-center gap-3">
@@ -98,7 +98,7 @@ export default function Cuidados() {
           className={`p-4 rounded-2xl border-2 transition-all duration-300 flex items-center justify-between shadow-sm group ${
             activeTab === "bienestar" 
             ? "bg-[#C9E9FF] border-[#C9E9FF] text-[#4a3426] scale-105" 
-            : "bg-white border-gray-200 text-gray-600 hover:border-[#C9E9FF] hover:text-[#4a3426]"
+            : "bg-blue-200 border-gray-200 text-gray-600 hover:border-[#C9E9FF] hover:text-[#4a3426]"
           }`}
         >
            <div className="flex items-center gap-3">
@@ -137,7 +137,7 @@ export default function Cuidados() {
       {/* 2. SECCIÓN DE BIENESTAR ANIMAL */}
       {activeTab === "bienestar" && (
         <div className="w-full max-w-3xl animate-in zoom-in-95 duration-300">
-          <div className="bg-white p-8 rounded-3xl shadow-lg border border-blue-100 relative overflow-hidden">
+          <div className="bg-blue-200 p-8 rounded-3xl shadow-lg border border-blue-100 relative overflow-hidden">
             {/* Adorno de fondo */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full "></div>
             
@@ -154,7 +154,7 @@ export default function Cuidados() {
                  </div>
               </div>
 
-              <div className="flex items-center gap-3 text-gray-700 bg-gray-50 p-3 rounded-xl">
+              <div className="flex items-center gap-3 text-gray-700 bg--50 p-3 rounded-xl">
                  <div className="bg-blue-100 text-blue-600 p-2 rounded-full"><FaEnvelope /></div>
                  <div className="overflow-hidden">
                     <p className="text-xs text-gray-500 font-bold uppercase">Correo Electrónico</p>
