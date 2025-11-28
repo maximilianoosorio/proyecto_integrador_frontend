@@ -37,9 +37,9 @@ const Footer = () => {
             </p>
             
             <div className="flex gap-3 mt-2 text-xl">
-              <a href="#" className="p-2 bg-white rounded-full hover:text-[#E1306C] shadow-sm transition-all hover:scale-110"><FaInstagram /></a>
-              <a href="#" className="p-2 bg-white rounded-full hover:text-[#1877F2] shadow-sm transition-all hover:scale-110"><FaFacebook /></a>
-              <a href="#" className="p-2 bg-white rounded-full hover:text-[#1DA1F2] shadow-sm transition-all hover:scale-110"><FaTwitter /></a>
+              <a href="https://www.instagram.com/" className="p-2 bg-white rounded-full hover:text-[#E1306C] shadow-sm transition-all hover:scale-110"><FaInstagram /></a>
+              <a href="https://web.facebook.com/?_rdc=1&_rdr#" className="p-2 bg-white rounded-full hover:text-[#1877F2] shadow-sm transition-all hover:scale-110"><FaFacebook /></a>
+              <a href="https://x.com/" className="p-2 bg-white rounded-full hover:text-[#1DA1F2] shadow-sm transition-all hover:scale-110"><FaTwitter /></a>
             </div>
           </div>
 

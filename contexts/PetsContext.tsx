@@ -2,8 +2,11 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
+// TU ENLACE DE MOCKAPI
+const API_URL = "https://6927193526e7e41498fcf98e.mockapi.io/alerta"; 
+
 export interface Mascota {
-  id: string;
+  id: string; 
   nombre: string;
   tipo: "Perro" | "Gato";
   estado: "perdido" | "encontrado" | "veterinaria";
@@ -14,9 +17,11 @@ export interface Mascota {
   imagen: string;
 }
 
+// ⬇️ AQUÍ ESTABA EL ERROR: Faltaba definir deletePet en la interfaz
 interface PetsContextType {
   pets: Mascota[];
-  addPet: (pet: Mascota) => Promise<void>;
+  addPet: (pet: Omit<Mascota, "id">) => Promise<void>;
+  deletePet: (id: string) => Promise<void>; // <--- AHORA SÍ EXISTE
   isLoading: boolean;
 }
 
@@ -26,13 +31,23 @@ export function PetsProvider({ children }: { children: ReactNode }) {
   const [pets, setPets] = useState<Mascota[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // --- CARGAR ---
   const fetchAlertas = async () => {
     try {
-      const res = await fetch("/api/alertas", { cache: "no-store" });
-      if (res.ok) {
-        const data = await res.json();
-        setPets(data);
-      }
+      const res = await fetch(API_URL); 
+      if (!res.ok) throw new Error("Error de conexión");
+      const data = await res.json();
+      
+      const dataArreglada = data.map((item: any) => {
+        let coordsReales = item.coordenadas;
+        if (typeof item.coordenadas === 'string') {
+            try { coordsReales = JSON.parse(item.coordenadas); } 
+            catch (e) { coordsReales = [6.2476, -75.5658]; }
+        }
+        return { ...item, coordenadas: coordsReales };
+      });
+
+      setPets(dataArreglada.reverse()); 
     } catch (error) {
       console.error("Error cargando:", error);
     } finally {
@@ -42,35 +57,51 @@ export function PetsProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => { fetchAlertas(); }, []);
 
-  // --- AQUÍ ESTÁ EL CAMBIO IMPORTANTE (DEBUG) ---
-  const addPet = async (pet: Mascota) => {
+  // --- AGREGAR ---
+  const addPet = async (pet: Omit<Mascota, "id">) => {
     try {
-      console.log("Intentando enviar:", pet); // Mira la consola del navegador (F12)
-
-      const res = await fetch("/api/alertas", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(pet),
-      });
-
-      // Si falla, leemos QUÉ pasó
-      if (!res.ok) {
-        const errorTexto = await res.text(); // Leemos el mensaje del servidor
-        console.error("Error del servidor:", errorTexto);
-        throw new Error(`Error ${res.status}: ${errorTexto}`);
+      let imagenSegura = pet.imagen;
+      if (imagenSegura.length > 50000) {
+         imagenSegura = pet.tipo === 'Perro' 
+            ? "https://cdn-icons-png.flaticon.com/512/616/616408.png" 
+            : "https://cdn-icons-png.flaticon.com/512/616/616430.png";
+         alert("⚠️ Foto muy pesada. Se guardó con imagen genérica.");
       }
 
-      await fetchAlertas(); 
+      const datosParaEnviar = {
+        ...pet,
+        imagen: imagenSegura,
+        coordenadas: JSON.stringify(pet.coordenadas)
+      };
 
+      await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datosParaEnviar),
+      });
+
+      await fetchAlertas();
     } catch (error: any) {
-      console.error("Error guardando alerta:", error);
-      // Esta alerta ahora te dirá EXACTAMENTE qué falló
-      alert(`FALLO: ${error.message}`); 
+      alert(`FALLO AL GUARDAR: ${error.message}`);
+    }
+  };
+
+  // --- BORRAR ---
+  const deletePet = async (id: string) => {
+    if (!confirm("¿Borrar esta alerta?")) return;
+
+    try {
+      setPets(prev => prev.filter(pet => pet.id !== id)); 
+      await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+    } catch (error) {
+      alert("No se pudo borrar de la nube.");
+      fetchAlertas();
     }
   };
 
   return (
-    <PetsContext.Provider value={{ pets, addPet, isLoading }}>
+    // Agregamos deletePet al valor del proveedor
+    <PetsContext.Provider value={{ pets, addPet, deletePet, isLoading }}>
       {children}
     </PetsContext.Provider>
   );
@@ -78,6 +109,6 @@ export function PetsProvider({ children }: { children: ReactNode }) {
 
 export function usePets() {
   const context = useContext(PetsContext);
-  if (!context) throw new Error("usePets debe usarse dentro de PetsProvider");
+  if (!context) throw new Error("usePets error");
   return context;
 }
