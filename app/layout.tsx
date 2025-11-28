@@ -6,17 +6,18 @@ import "./globals.css";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 
-// Importamos Clerk (Autenticación)
+// 1. Importamos Clerk y el idioma ESPAÑOL
 import { ClerkProvider } from "@clerk/nextjs";
+import { esES } from "@clerk/localizations";
 
-// 🚨 IMPORTANTE: Importamos el Provider de tu API/Contexto
+// 2. Importamos el Provider de tu API/Contexto
 import { PetsProvider } from "@/contexts/PetsContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "VeciPets",
-  description: "Comunidad de mascotas",
+  title: "VeciPets - Comunidad de Mascotas",
+  description: "Ayuda a encontrar mascotas perdidas y adopta.",
 };
 
 export default function RootLayout({
@@ -25,23 +26,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    // 3. Agregamos localization={esES} para que el Login salga en español
+    <ClerkProvider localization={esES}>
       <html lang="es">
+        {/* 4. suppressHydrationWarning={true} 
+           Esto evita el error rojo de las extensiones (como Grammarly) 
+        */}
         <body className={inter.className} suppressHydrationWarning={true}>
           
-          {/* 🚨 AQUÍ ESTÁ LA SOLUCIÓN: */}
-          {/* Debemos envolver todo el contenido visual con <PetsProvider> */}
-          {/* Si no pones esto, usePets() fallará porque no encuentra los datos. */}
           <PetsProvider>
-            
-            <div className="flex flex-col min-h-screen">
+            <div className="flex flex-col min-h-screen relative">
+              {/* Navbar fijo arriba */}
               <Navbar />
-              <main className="grow container mx-auto p-4">
+              
+              {/* Contenido principal que empuja el footer hacia abajo */}
+              <main className="grow container mx-auto p-4 w-full">
                 {children}
               </main>
+              
+              {/* Footer siempre abajo */}
               <Footer />
             </div>
-
           </PetsProvider>
           
         </body>
