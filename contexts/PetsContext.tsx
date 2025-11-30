@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 // Enlace a la API mock
 const API_URL = "https://6927193526e7e41498fcf98e.mockapi.io/alerta"; 
@@ -14,7 +14,7 @@ export interface Mascota {
   ubicacionTexto: string;
   coordenadas: [number, number];
   fecha: string;
-  descripcion: string;
+  descripcion: string
   imagen: string;
 }
 
@@ -49,7 +49,7 @@ export function PetsProvider({ children }: { children: ReactNode }) {
         }
         return { ...item, coordenadas: coordsReales };
       });
-      // Guardamos las alertas en el estado, invirtiendo el orden para mostrar las más recientes primero
+      
       setPets(dataArreglada.reverse()); 
     } catch (error) {
       console.error("Error cargando:", error);
@@ -70,7 +70,7 @@ export function PetsProvider({ children }: { children: ReactNode }) {
             : "https://cdn-icons-png.flaticon.com/512/616/616430.png";
          alert("⚠️ Foto muy pesada. Se guardó con imagen genérica.");
       }
-
+      // Preparamos los datos para enviar
       const datosParaEnviar = {
         ...pet,
         imagen: imagenSegura,
