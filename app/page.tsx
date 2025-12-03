@@ -1,27 +1,33 @@
 import Link from "next/link";
+// Importación de componentes de iconos vectoriales (SVG) de React Icons.
 import { FaBell, FaHeart, FaMapMarkedAlt, FaSearch, FaUserFriends, FaBullhorn, FaHome } from "react-icons/fa";
+// Importación del componente de registro modal para gestionar el flujo de autenticación (Auth Flow) vía Clerk.
 import { SignUpButton } from "@clerk/nextjs";
 
 export default function Home() {
 
   return (
+     // Contenedor de layout principal: estructura flexbox para apilamiento vertical con espaciado uniforme.
     <div className="flex flex-col gap-16 pb-10">
       
       {/* --- 2. SECCIÓN HERO (LA PORTADA) --- 
+      La combinación 'relative z-0' establece un nuevo Stacking Context (contexto de apilamiento)
+     para asegurar la correcta superposición del Navbar fijo sobre esta sección.
       */}
       <section className="relative z-0 bg-[#C9E9FF] rounded-3xl overflow-hidden p-8 md:p-12 text-center md:text-left flex flex-col md:flex-row items-center justify-between shadow-sm mx-4 mt-4">
         
         <div className="max-w-xl space-y-6 relative z-10">
-          {/* Título con énfasis en la palabra clave "huella" usando color */}
+          {/* Título H1: Define la jerarquía semántica y es crucial para el SEO de la Landing Page. */}
           <h1 className="text-4xl md:text-6xl font-extrabold text-[#4a3426] leading-tight">
             Unidos por una <span className="text-orange-600">huella</span> 🐾
           </h1>
           <p className="text-lg text-[#4a3426]/80 font-medium">
             La comunidad digital para proteger y cuidar a nuestras mascotas en el Valle de Aburrá.
           </p>
-          
-          {/* Botones de Acción Principal (CTA) */}
+
+         {/* Contenedor de Call-to-Action (CTA) primarios, diseñado para ser responsive (columna a fila). */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+            {/* Uso de next/link para optimizar la navegación cliente-side (prefetching). */}
             <Link href="/mapa" className="bg-orange-500 text-white px-6 py-3 rounded-xl font-bold text-lg hover:bg-orange-600 transition shadow-lg flex items-center justify-center gap-2 hover:scale-105 active:scale-95">
               <FaMapMarkedAlt /> Ver Mapa
             </Link>
@@ -33,7 +39,7 @@ export default function Home() {
           {/* --- 3. PRUEBA SOCIAL (SOCIAL PROOF) ---*/}
           <div className="flex items-center gap-4 justify-center md:justify-start pt-2">
             <div className="flex -space-x-3">
-              {/* Círculos con iniciales para simular usuarios reales */}
+             {/* Elementos UI estáticos para simular avatares y generar confianza/percepción de actividad (engagement). */}
               <div className="w-10 h-10 rounded-full border-2 border-white bg-blue-400 flex items-center justify-center text-xs text-white font-bold">JD</div>
               <div className="w-10 h-10 rounded-full border-2 border-white bg-red-400 flex items-center justify-center text-xs text-white font-bold">MA</div>
               <div className="w-10 h-10 rounded-full border-2 border-white bg-green-400 flex items-center justify-center text-xs text-white font-bold">Lu</div>
@@ -46,7 +52,10 @@ export default function Home() {
         </div>
         
 
-        {/* --- 4. ANIMACIÓN DE RADAR Y SALTO --- */}
+        {/* --- 4. ANIMACIÓN DE RADAR Y SALTO --- 
+        Se utiliza la utilidad `animate-ping` para simular un efecto de onda radial
+       y `animate-bounce` para dar un efecto de movimiento recurrente. Esto mejora el Visual Feedback.
+*/}
          <div className="hidden md:block relative w-80 h-80 mt-8 md:mt-0">
             <div className="absolute inset-0 bg-white/40 rounded-full animate-ping opacity-75"></div>
             <div className="relative w-full h-full bg-white/30 rounded-full flex items-center justify-center text-9xl shadow-inner backdrop-blur-sm z-10">
@@ -59,13 +68,16 @@ export default function Home() {
       <section className="bg-white py-12 border-y border-gray-100 relative z-0">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-[#4a3426] mb-10">¿Cómo funciona VeciPets?</h2>
-          
+
+         {/*  Inicio de la sección de Onboarding/Feature Explanation. */}
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-            {/* Línea decorativa que conecta los pasos (solo visible en pantallas grandes) */}
+            {/* Elemento de diseño no funcional, oculto en móvil (`hidden md:block`). */}
             <div className="hidden md:block absolute top-12 left-20 right-20 h-1 bg-gray-100 -z-10"></div>
 
-            {/* Paso 1 */}
+          {/* Paso 1: Módulo de Reporte */}
             <div className="flex flex-col items-center group">
+            {/* Implementación de micro-interacciones con `group-hover:scale-110 transition`. */}
               <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center text-red-600 text-3xl mb-4 border-4 border-white shadow-sm group-hover:scale-110 transition">
                 <FaMapMarkedAlt />
               </div>
@@ -73,7 +85,7 @@ export default function Home() {
               <p className="text-gray-500 max-w-xs">Marca la ubicación exacta en el mapa donde viste o perdiste a la mascota.</p>
             </div>
 
-            {/* Paso 2 */}
+            {/* Paso 2: Módulo de Notificación */}
             <div className="flex flex-col items-center group">
               <div className="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 text-3xl mb-4 border-4 border-white shadow-sm group-hover:scale-110 transition">
                 <FaBullhorn />
@@ -82,7 +94,8 @@ export default function Home() {
               <p className="text-gray-500 max-w-xs">Tus vecinos reciben una alerta instantánea en sus celulares.</p>
             </div>
 
-            {/* Paso 3 */}
+          {/* Paso 3: Módulo de Encuentro */}
+
             <div className="flex flex-col items-center group">
               <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center text-green-600 text-3xl mb-4 border-4 border-white shadow-sm group-hover:scale-110 transition">
                 <FaHome />
@@ -94,7 +107,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- 7. CARACTERÍSTICAS SECUNDARIAS --- */}
+      {/* --- CARACTERÍSTICAS SECUNDARIAS --- */}
       <section className="container mx-auto px-4 relative z-0">
         <h2 className="text-2xl font-bold text-center text-[#4a3426] mb-8">
           Más herramientas para ti
@@ -117,11 +130,15 @@ export default function Home() {
         </div>
       </section>
 
+      {/*  Sección final de Call to Action (CTA) para maximizar la conversión de usuario. */}
+
       <section className="bg-[#4a3426] text-white rounded-3xl p-10 text-center mx-4 relative z-0 shadow-xl mb-4">
         <h2 className="text-3xl font-bold mb-4">¿Listo para ayudar?</h2>
         <p className="text-white/80 mb-8 max-w-xl mx-auto">
           Únete hoy a la red de cuidado animal más grande de Medellín. Es gratis.
         </p>
+        {/* Uso del componente SignUpButton de Clerk, que encapsula la lógica de autenticación (modal pop-up). */}
+
         <SignUpButton mode="modal">
           <button className="bg-[#C9E9FF] text-[#4a3426] px-10 py-4 rounded-full font-bold hover:bg-white transition transform hover:scale-105 shadow-lg">
             Crear Cuenta Gratis
