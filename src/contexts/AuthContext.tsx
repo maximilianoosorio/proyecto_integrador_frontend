@@ -1,8 +1,8 @@
 'use client'
 
 import { createContext, useContext, useState } from "react";
-import { User } from "../types/user";
 import * as auth from "../services/authService";
+import { User } from "../types/user";
 
 type AuthValue = { user: User | null; login: (email: string, password: string) => Promise<void>; logout: () => void };
 

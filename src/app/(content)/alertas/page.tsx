@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import { FaExclamationCircle } from "react-icons/fa";
 import { usePets } from "@/contexts/PetsContext";
 import DeleteButton from "@/features/alertas/DeleteButton";
+import Link from "next/link";
+import { FaExclamationCircle } from "react-icons/fa";
 
 export default function AlertasPage() {
   // ------------------------------------------------------------
