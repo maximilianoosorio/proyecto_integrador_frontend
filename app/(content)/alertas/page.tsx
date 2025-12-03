@@ -41,8 +41,8 @@ export default function AlertasPage() {
       ---------------------------------------------------------*/}
       <div className="flex flex-col md:flex-row justify-between items-center gap-4 py-6 border-b border-gray-200">
         <div>
-          <h1 className="text-3xl font-bold text-red-500">Mascotas Registradas 🐾</h1>
-          <p className="text-black">Listado de mascotas obtenidas desde tu API MockAPI.</p>
+          <h1 className="text-3xl font-bold text-red-500"> centro  de control de reportes 🐾</h1>
+          <p className="text-black">Indice de casos reportados</p>
         </div>
 
         {/* Botón que redirige al formulario de reporte */}
