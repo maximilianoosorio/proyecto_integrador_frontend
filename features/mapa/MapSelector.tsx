@@ -1,11 +1,23 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import { useEffect } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { useState, useEffect } from "react";
 
-// Corrección de iconos (igual que antes)
+// =========================================================
+// 1. INTERFAZ: Definimos qué recibe este componente del padre
+// =========================================================
+interface MapSelectorProps {
+  // Función para avisar al padre (page.tsx) que hubo un clic
+  onLocationSelect: (coords: [number, number]) => void;
+  // La ubicación actual que tiene el padre
+  selectedLocation: [number, number] | null;
+}
+
+// =========================================================
+// 2. UTILIDAD: Arreglar iconos rotos de Leaflet en Next.js
+// =========================================================
 const fixIcons = () => {
   delete (L.Icon.Default.prototype as any)._getIconUrl;
   L.Icon.Default.mergeOptions({
@@ -15,41 +27,51 @@ const fixIcons = () => {
   });
 };
 
-// Este sub-componente maneja los eventos del clic
-function LocationMarker({ setLocation }: { setLocation: (latlng: [number, number]) => void }) {
-  const [position, setPosition] = useState<[number, number] | null>(null);
-
+// =========================================================
+// 3. COMPONENTE INTERNO: Manejador de Clics
+// =========================================================
+function ClickHandler({ onLocationSelect }: { onLocationSelect: (coords: [number, number]) => void }) {
   useMapEvents({
     click(e) {
-      const newPos: [number, number] = [e.latlng.lat, e.latlng.lng];
-      setPosition(newPos);
-      setLocation(newPos); // Enviamos la coordenada al formulario padre
+      // Al hacer clic, extraemos lat/lng y se lo mandamos al padre
+      const coords: [number, number] = [e.latlng.lat, e.latlng.lng];
+      onLocationSelect(coords); 
     },
   });
-
-  return position ? <Marker position={position} /> : null;
+  return null;
 }
 
-interface SelectorProps {
-  onLocationSelect: (coords: [number, number]) => void;
-}
-
-const MapSelector = ({ onLocationSelect }: SelectorProps) => {
+// =========================================================
+// 4. COMPONENTE PRINCIPAL
+// =========================================================
+export default function MapSelector({ onLocationSelect, selectedLocation }: MapSelectorProps) {
+  
+  // Arreglamos los iconos al montar el componente
   useEffect(() => { fixIcons(); }, []);
+
+  // Coordenada inicial (por defecto Cali), o la que el padre nos diga
+  const centerPosition: [number, number] = selectedLocation || [3.4516, -76.5320];
 
   return (
     <MapContainer
-      center={[3.4516, -76.5320]} // Cali
+      center={centerPosition}
       zoom={13}
       style={{ height: "100%", width: "100%", borderRadius: "0.5rem" }}
     >
       <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; OpenStreetMap contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <LocationMarker setLocation={onLocationSelect} />
+
+      {/* Componente invisible que detecta los clics */}
+      <ClickHandler onLocationSelect={onLocationSelect} />
+
+      {/* Si el padre tiene una ubicación (selectedLocation), mostramos el marcador */}
+      {selectedLocation && (
+        <Marker position={selectedLocation}>
+          <Popup>Ubicación seleccionada</Popup>
+        </Marker>
+      )}
     </MapContainer>
   );
-};
-
-export default MapSelector;
+}

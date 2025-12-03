@@ -32,7 +32,7 @@ export default function Page() {
         // bottom-5: Un poquito separado del borde inferior
         // left-20: Separado de la izquierda para dejar espacio a la "N" de Clerk
         // z-[9999]: Para que flote SOBRE TODO
-        className="fixed bottom-5 left-20 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition-all z-[9999] hover:scale-110 animate-bounce border-2 border-white"
+        className="fixed bottom-5 left-20 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition-all hover:scale-110 animate-bounce border-2 border-white"
         aria-label="Contactar por WhatsApp"
       >
         <FaWhatsapp className="text-4xl" />

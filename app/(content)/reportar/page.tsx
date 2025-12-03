@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { FaCamera, FaCheckCircle, FaDog, FaCat } from "react-icons/fa";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { FaCamera, FaCat, FaCheckCircle, FaDog } from "react-icons/fa";
 
 
 // Contexto de mascotas
@@ -231,16 +231,22 @@ export default function ReportarPage() {
           </label>
         </div>
 
-        {/* ====================== MAPA ====================== */}
+     {/* ====================== MAPA ====================== */}
         <div>
           <label className="font-bold text-gray-700">Ubicación</label>
-          <div className="h-64 rounded-xl overflow-hidden border">
-            <DynamicSelector onLocationSelect={setUbicacion} />
+          <p className="text-xs text-gray-500 mb-2">Toca el mapa para marcar dónde la viste.</p>
+          
+          <div className="h-64 rounded-xl overflow-hidden border border-gray-300 relative z-0">
+            {/* AQUÍ ESTÁ EL CAMBIO IMPORTANTE */}
+            <DynamicSelector
+              onLocationSelect={(coords: [number, number]) => setUbicacion(coords)}
+              selectedLocation={ubicacion}
+            />
           </div>
 
           {ubicacion && (
             <p className="text-green-600 mt-1 flex items-center gap-1 font-bold">
-              <FaCheckCircle /> Coordenadas guardadas
+              <FaCheckCircle /> Coordenadas guardadas: {ubicacion[0].toFixed(4)}, {ubicacion[1].toFixed(4)}
             </p>
           )}
         </div>
@@ -284,4 +290,5 @@ function CampoTexto({
       />
     </div>
   );
+  
 }

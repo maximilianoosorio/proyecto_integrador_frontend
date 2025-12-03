@@ -54,7 +54,7 @@ const Navbar = () => {
         </div>
 
         {/* BOTÓN HAMBURGUESA (MÓVIL) */}
-        <div className="relative z-50 md:hidden">
+        <div className="md:hidden z-50">
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="text-2xl p-2 text-[#4a3426] hover:bg-black/5 rounded-full transition focus:outline-none"
