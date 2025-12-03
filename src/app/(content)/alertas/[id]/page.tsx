@@ -1,69 +1,75 @@
 "use client"; 
-// Indica que este componente se ejecuta del lado del cliente (browser).
-// Necesario para usar hooks como useState, useEffect o contextos.
+// Indica que este componente se ejecuta del lado del cliente.
 
 import { use } from "react";
-// "use" permite resolver promesas directamente dentro de componentes cliente en Next.js 14+.
+// "use" permite resolver promesas directamente en un componente cliente.
 
 import { usePets } from "@/contexts/PetsContext";
-// Importamos el contexto donde están todas las mascotas guardadas globalmente.
+// Contexto global donde están guardadas todas las mascotas.
 
-import { notFound } from "next/navigation";
-// Función que nos permite redirigir a la página 404 si no se encuentra la mascota.
+import { notFound, useRouter } from "next/navigation";
+// notFound para mostrar 404.
+// useRouter permite navegar entre páginas (lo usamos para el botón de volver).
 
 
 // Componente de detalle de alerta individual
 export default function AlertaDetallePage(props: { params: Promise<{ id: string }> }) {
 
-  // Next.js envía "params" como una PROMESA, así que debemos resolverla.
-  // Aquí extraemos el ID que viene en la URL "/alertas/[id]"
+  // Next.js entrega params como PROMESA, así que debemos resolverla.
   const { id } = use(props.params);
 
-  // Obtenemos del contexto:
-  // - pets: todas las mascotas disponibles
-  // - isLoading: indica si el contexto está cargando los datos
+  // Obtenemos mascotas y estado de carga desde el contexto global.
   const { pets, isLoading } = usePets();
 
-  // Mientras los datos cargan, mostramos un texto simple
+  // Router para manejar el botón "Volver"
+  const router = useRouter();
+
+  // Mientras carga la información mostramos mensaje
   if (isLoading) return <p>Cargando...</p>;
 
-  // Buscamos la mascota cuyo ID coincida con el de la URL
+  // Buscamos la mascota correspondiente al ID recibido
   const mascota = pets.find((p) => p.id === id);
 
-  // Si no existe una mascota con ese ID → mostramos página 404
+  // Si no existe, mostramos página 404
   if (!mascota) return notFound();
 
 
-  // Si la mascota se encuentra, mostramos la tarjeta con la información
+  // Render del detalle
   return (
     <div className="flex justify-center p-6">
-      {/* Contenedor de la tarjeta */}
+
+      {/* Contenedor principal del card */}
       <div className="bg-white border rounded-xl shadow-lg p-6 w-full max-w-md">
+
+        {/* BOTÓN VOLVER */}
+        {/* Navega de regreso a la ruta /alertas */}
+        <button
+          onClick={() => router.push("/alertas")}
+          className="mb-4 px-4 py-2 bg-blue-100 text-gray-500 rounded-lg hover:bg-gray-200 transition"
+        >
+          ← Volver a Alertas
+        </button>
 
         {/* Título del detalle */}
         <h1 className="text-2xl font-bold mb-4 text-center">
           Detalle de Alerta
         </h1>
 
-        {/* Imagen de la mascota (solo si existe la propiedad "foto") */}
+        {/* Imagen de la mascota */}
         {mascota.foto && (
           <img
-            src={mascota.foto}        // URL de la imagen
-            alt={mascota.nombre}      // Texto alternativo
+            src={mascota.foto}
+            alt={mascota.nombre}
             className="w-full h-56 object-cover rounded-lg mb-4"
-            // w-full → imagen ocupa todo el ancho de la tarjeta
-            // h-56 → altura fija para mantener el diseño compacto
-            // object-cover → recorta la imagen sin deformarla
-            // rounded-lg → esquinas redondeadas
           />
         )}
 
-        {/* Nombre de la mascota */}
+        {/* Nombre */}
         <h2 className="text-xl font-semibold mb-2 text-center">
           {mascota.nombre}
         </h2>
 
-        {/* Información detallada */}
+        {/* Información */}
         <p><strong>Tipo:</strong> {mascota.tipo}</p>
         <p><strong>Raza:</strong> {mascota.raza}</p>
         <p><strong>Edad:</strong> {mascota.edad}</p>
@@ -71,7 +77,7 @@ export default function AlertaDetallePage(props: { params: Promise<{ id: string 
         <p><strong>Ubicación:</strong> {mascota.ubicacionTexto}</p>
         <p><strong>Fecha:</strong> {mascota.fecha}</p>
 
-        {/* Descripción con margen superior */}
+        {/* Descripción */}
         <p className="mt-2">
           <strong>Descripción:</strong> {mascota.descripcion}
         </p>
