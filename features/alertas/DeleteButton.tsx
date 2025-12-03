@@ -27,7 +27,7 @@ export default function DeleteButton({ id }: DeleteButtonProps) {
   return (
     <button
       onClick={handleDelete}
-      className="absolute top-3 right-3 bg-white/90 p-2 rounded-full text-red-500 shadow-md hover:bg-red-500 hover:text-white transition z-10 opacity-80 hover:opacity-100"
+      className="absolute top-3 right-3 bg-transparent p-2 rounded-full text-transparent shadow-md hover:bg-transparent hover:text-transparent transition z-10 opacity-80 hover:opacity-100"
       title="Borrar alerta"
     >
       <FaTrash />
